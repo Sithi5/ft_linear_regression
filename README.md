@@ -1,10 +1,9 @@
-# ComputorV2 [(subject)](https://cdn.intra.42.fr/pdf/pdf/5667/en.pdf)
+# ft_linear_regression [(subject)](https://cdn.intra.42.fr/pdf/pdf/30249/fr.subject.pdf)
 
-![png](png)
+![png](linear_regression.jpg)
 
-A calculator interpreter than can operate on real, complex numbers, and 2D matrix data types, store variables, define and evaluate functions, and solve quadratic equations in Python.
-
-Improvement of [computorv1](https://github.com/Sithi5/computorv1).
+  
+Implement a linear regression algorithm on a single element, in this case the mileage of a car.
 
 # How to run
 
@@ -14,12 +13,12 @@ Create a virtual environment and activate it
 > .\venv\Scripts\activate.bat # on Windows
 ```
 
-Install the pre-requirement
+Install the pre-requirement: 
 ```bash
 (venv) > pip install -U -r pre-requirements.txt
 ```
 
-Execute `setup.py` for a build in dev mode
+Execute `setup.py`:
 ```bash
-(venv) > pip install --editable .[dev]
+(venv) > pip install --editable .[dev] #[dev] to build in dev mode.
 ```
