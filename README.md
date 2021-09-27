@@ -22,3 +22,9 @@ Execute `setup.py`:
 ```bash
 (venv) > pip install --editable .[dev] #[dev] to build in dev mode.
 ```
+
+Launch `linear_regression`:
+
+```bash
+(venv) > linear_regression
+```

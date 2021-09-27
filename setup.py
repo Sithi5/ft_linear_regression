@@ -3,12 +3,16 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
-requirements = []
+requirements = ["pandas==1.3.3"]
 
-test_requirements = ["pytest==5.4.3", "black==21.7b0"]
+test_requirements = ["pytest==5.4.3"]
+
+dev_requirements = ["black==21.9b0"] + test_requirements
+
+print("dev_requirements = ", dev_requirements)
 
 extra_requirements = {
-    "dev": test_requirements,
+    "dev": dev_requirements,
 }
 
 setup(
@@ -24,9 +28,11 @@ setup(
     install_requires=requirements,
     extras_require=extra_requirements,
     entry_points={
-        "console_scripts": ["linear_regression = linear_regression:main"],
+        "console_scripts": ["linear_regression = src.cli:cli"],
     },
     classifiers=[
         "Development Status :: 1 - Planning",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
 )
