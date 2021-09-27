@@ -14,17 +14,17 @@ extra_requirements = {
 setup(
     name="ft_linear_regression",
     version="0.0.1",
-    description="A calculator interpreter.",
+    description="A linear regression algorithm.",
     long_description=long_description,
     author="Malo Boucé",
     author_email="ma.sithis@gmail.com",
-    url="https://github.com/Sithi5/computorv2",
-    py_modules=["computorv2"],
-    packages=["src", "gui", "tests"],
+    url="https://github.com/Sithi5/ft_linear_regression",
+    py_modules=["ft_linear_regression"],
+    packages=["src", "tests"],
     install_requires=requirements,
     extras_require=extra_requirements,
     entry_points={
-        "console_scripts": ["computorv2 = computorv2:main"],
+        "console_scripts": ["linear_regression = linear_regression:main"],
     },
     classifiers=[
         "Development Status :: 1 - Planning",
