@@ -32,5 +32,22 @@ Execute `setup.py`:
 Launch `linear_regression`:
 
 ```bash
-(venv) > linear_regression
+(venv) λ linear_regression --help
+Usage: linear_regression [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  learn
+  predict
+  set-theta
 ```
+
+## Resources
+
+* [https://www.datacorner.fr/gradient-descent/](https://www.datacorner.fr/gradient-descent/)
+* [https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html](https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html) 
+* [https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling](https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling) 
+* [https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf) 
+* [https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf](https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf)
