@@ -6,35 +6,17 @@
 #    By: mabouce <ma.sithis@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/01 20:27:45 by mabouce           #+#    #+#              #
-#    Updated: 2021/09/27 18:31:37 by mabouce          ###   ########.fr        #
+#    Updated: 2021/09/28 15:49:09 by mabouce          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import click
-import pandas as pd
-from pandas.core.frame import DataFrame
 from pathlib import Path
 
 from src.global_var import DEFAULT_CSV_FILE_PATH, THETA_VALUE_FILE_PATH
 from src.print import print_data
 from src.deep_learner import DeepLearner
-from src.utils import write_theta_file
-
-
-def read_csv_file(csv_file_path) -> DataFrame:
-    data = pd.read_csv(csv_file_path)
-    print_data(data=data)
-    return data
-
-
-def get_theta_values() -> tuple():
-    try:
-        with open(THETA_VALUE_FILE_PATH) as file:
-            theta = file.read()
-            theta = theta.split()
-        return (float(theta[0]), float(theta[1]))
-    except:
-        return (0.0, 0.0)
+from src.utils import write_theta_file, get_theta_values_from_file, read_csv_file
 
 
 @click.command()
@@ -44,7 +26,7 @@ def get_theta_values() -> tuple():
 )
 def predict(km: float):
     try:
-        theta_0, theta_1 = get_theta_values()
+        theta_0, theta_1 = get_theta_values_from_file()
         predicted_price = theta_0 + theta_1 * km
         print("The estimated price of the car is : ", predicted_price)
     except:
@@ -52,16 +34,20 @@ def predict(km: float):
 
 
 @click.command()
-@click.option("-d", "--debug", default=False, help="Add debug message")
 @click.argument(
-    "file_data_path",
+    "csv_file_path",
     default=DEFAULT_CSV_FILE_PATH,
     type=click.Path(exists=True, readable=True, path_type=Path),
 )
-def learn(file_data_path: Path, debug: bool):
+def learn(csv_file_path: Path):
     try:
+        data = read_csv_file(csv_file_path=csv_file_path)
+        if data.empty:
+            print("data is empty, nothing to learn.")
+            return
+        print_data(data=data)
         deep_learner = DeepLearner()
-        deep_learner.learn()
+        deep_learner.learn(data=data)
     except:
         print("learning failed.")
 
