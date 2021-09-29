@@ -46,8 +46,11 @@ Commands:
 
 ## Resources
 
+* [https://www.stat4decision.com/fr/faire-regression-lineaire-r-python/](https://www.stat4decision.com/fr/faire-regression-lineaire-r-python/)
 * [https://www.datacorner.fr/gradient-descent/](https://www.datacorner.fr/gradient-descent/)
 * [https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html](https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html) 
 * [https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling](https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling) 
 * [https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf) 
 * [https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf](https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf)
+* [https://mrmint.fr/regression-lineaire-python-pratique](https://mrmint.fr/regression-lineaire-python-pratique)
+* [https://machinelearnia.com/regression-lineaire-simple/](https://machinelearnia.com/regression-lineaire-simple/)
