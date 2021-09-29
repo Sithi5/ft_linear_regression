@@ -3,13 +3,11 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
-requirements = ["pandas==1.3.3"]
+requirements = ["pandas==1.3.3", "matplotlib==3.4.3"]
 
 test_requirements = ["pytest==5.4.3"]
 
 dev_requirements = ["black==21.9b0"] + test_requirements
-
-print("dev_requirements = ", dev_requirements)
 
 extra_requirements = {
     "dev": dev_requirements,
