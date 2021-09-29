@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from pandas.core.frame import DataFrame
 
-from src.utils import write_theta_file, get_theta_values_from_file, maximum_absolute_scaling
+from src.utils import write_theta_file, get_theta_values_from_file
 from src.global_var import RESOURCES_DIR_PATH
 
 
@@ -13,37 +13,14 @@ class DeepLearner:
     This class use input data to learn with different methods.
     """
 
+    _learning_rate: float = 0.1
+
     def __init__(self):
         try:
             self._theta_0, self._theta_1 = get_theta_values_from_file()
         except:
             self._theta_0 = 0.0
             self._theta_1 = 0.0
-
-    def _linear_regression_learn_theta_0(self):
-        learning_ratio = 1
-        return learning_ratio
-
-    def _linear_regression_model(self, x: float):
-        # f(x) = ax + b
-        return self._theta_0 + self._theta_1 * x
-
-    def _linear_regression_cost(
-        self, m: float, x: ArrayLike, y: ArrayLike, learning_ratio: float = 0.5
-    ):
-        self._theta_0 = (
-            learning_ratio
-            * (1 / m)
-            * sum([(self._linear_regression_model(x[i]) - y[i]) for i in range(m)])
-        )
-        self._theta_1 = (
-            learning_ratio
-            * (1 / m)
-            * sum([((self._linear_regression_model(x[i]) - y[i]) * x[i]) for i in range(m)])
-        )
-
-    def _linear_regression_minimising_cost(self, x: float):
-        pass
 
     def print_linear_regression_model_and_data(
         self,
@@ -72,6 +49,66 @@ class DeepLearner:
         if to_save is True:
             plt.savefig(os.path.join(RESOURCES_DIR_PATH, title + ".png"))
 
+    def _partial_derivative_calcul(self):
+        derivated_theta0 = float(0)
+        derivated_theta1 = float(0)
+
+        derivated_theta0 = (
+            self._learning_rate
+            * (1 / self._m)
+            * sum(
+                [
+                    (self._theta_0 + (self._theta_1 * self._normalized_x[i]))
+                    - float(self._normalized_y[i])
+                    for i in range(self._m)
+                ]
+            )
+        )
+        derivated_theta1 = (
+            self._learning_rate
+            * (1 / self._m)
+            * sum(
+                [
+                    (
+                        (self._theta_0 + (self._theta_1 * self._normalized_x[i]))
+                        - float(self._normalized_y[i])
+                    )
+                    * float(self._normalized_x[i])
+                    for i in range(self._m)
+                ]
+            )
+        )
+        return [derivated_theta0, derivated_theta1]
+
+    def _gradient_descent(self):
+        iteration_number = 1000
+        for i in range(iteration_number):
+            [derivated_theta0, derivated_theta1] = self._partial_derivative_calcul()
+            self._theta_0 = self._theta_0 - derivated_theta0
+            self._theta_1 = self._theta_1 - derivated_theta1
+
+    def _normalizing_data(self):
+        """
+        Normalizing data using maximum absolute scaling algorithm.
+        """
+        self._original_x_scale = self._data["km"].abs().max()
+        self._data["km"] = self._data["km"] / self._data["km"].abs().max()
+        self._original_y_scale = self._data["price"].abs().max()
+        self._data["price"] = self._data["price"] / self._data["price"].abs().max()
+
+    def _denormalizing_data(self):
+        """
+        Set back data to it's original scale.
+        """
+        self._data["km"] = self._data["km"] * self._original_x_scale
+        self._data["price"] = self._data["price"] * self._original_y_scale
+
+    def _set_theta_to_scale(self):
+        """
+        Set theta to original data scale.
+        """
+        pass
+
     def learn_with_linear_regression(
         self,
         data: DataFrame,
@@ -85,29 +122,29 @@ class DeepLearner:
         self._theta_0 = 0.0
         self._theta_1 = 0.0
 
-        m = len(data)
-        # Select first row of our dataset (km)
-        x = data.iloc[0:m, 0]
-        # Select second row of our dataset (price)
-        y = data.iloc[0:m, 1]
+        self._data = data
 
-        data = maximum_absolute_scaling(data)
-        normalized_x = data.iloc[0:m, 0]
-        normalized_y = data.iloc[0:m, 1]
+        self._m = len(data)
+        self._x = data.iloc[0 : self._m, 0]
+        self._y = data.iloc[0 : self._m, 1]
+        self._normalizing_data()
+        self._normalized_x = data.iloc[0 : self._m, 0]
+        self._normalized_y = data.iloc[0 : self._m, 1]
 
         self.print_linear_regression_model_and_data(
-            x=x,
-            y=y,
+            x=self._normalized_x,
+            y=self._normalized_y,
             xlabel="km",
             ylabel="price",
             title="linear_regression_model_and_data_before_learn",
             to_show=False,
         )
-        self._linear_regression_cost(m=m, x=x, y=y)
+
+        self._gradient_descent()
 
         self.print_linear_regression_model_and_data(
-            x=x,
-            y=y,
+            x=self._normalized_x,
+            y=self._normalized_y,
             xlabel="km",
             ylabel="price",
             title="linear_regression_model_and_data_after_learn",
