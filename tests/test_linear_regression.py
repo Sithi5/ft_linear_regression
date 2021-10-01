@@ -1,25 +1,46 @@
 import pytest
 
-# from src.expression_resolver import ExpressionResolver
-# from src.calculator import Calculator
+from src.global_var import DEFAULT_CSV_FILE_PATH
+from src.deep_learner import DeepLearner
+from src.utils import save_info_to_file, get_info_from_file, read_csv_file
+from src.cli import predictor
 
 
-# def test_any_calc():
-#     resolver = ExpressionResolver(verbose=False)
+def test_subject():
+    data = read_csv_file(csv_file_path=DEFAULT_CSV_FILE_PATH)
 
-#     with pytest.raises(NotImplementedError) as e:
-#         ret = resolver.solve(expression=" (5 + 2y)(2 - (2y * 3y))")
-#     assert str(e.value) == "Var cannot be inside a parenthesis for the moment."
+    deep_learner = DeepLearner()
+    deep_learner.learn_with_linear_regression(data=data.copy())
 
-#     ret = resolver.solve(expression="y{5 + 2}(2 - {2 * -3.54}}")
-#     assert ret == "63.56*Y"
+    m = len(data)
+    x = data.iloc[0:m, 0]
+    y = data.iloc[0:m, 1]
 
-#     ret = resolver.solve(expression="5y/y")
-#     assert ret == "5.0"
+    max_diff = 0
+    max_diff_km = -1
+    average_diff = 0
+    for index in range(m):
+        km = x[index]
+        real_price = y[index]
+        predicted_price = predictor(km=km)
+        diff = abs(int(real_price) - int(predicted_price))
+        print("km=\t\t\t", km)
+        print("predicted_price=\t", int(predicted_price))
+        print("real_price=\t\t", int(real_price))
+        print("diff =\t\t\t", diff)
+        print()
+        if diff > max_diff:
+            max_diff = diff
+            max_diff_km = km
+        average_diff += diff
+    average_diff /= m
+    print()
+    print("The average diff value is: ", average_diff)
 
-#     with pytest.raises(NotImplementedError) as e:
-#         ret = resolver.solve(expression=" -5 - 4 * X + X^2= X^2 + x^5")
-#     assert (
-#         str(e.value)
-#         == "The polynomial degree is strictly greater than 2, the resolver is not implemented yet."
-#     )
+    if max_diff_km > 0:
+        print(
+            "The biggest diff is for ",
+            str(int(max_diff_km)),
+            "km with a value of: ",
+            max_diff,
+        )
