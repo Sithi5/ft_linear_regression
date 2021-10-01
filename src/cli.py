@@ -6,7 +6,7 @@
 #    By: mabouce <ma.sithis@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/01 20:27:45 by mabouce           #+#    #+#              #
-#    Updated: 2021/10/01 14:56:44 by mabouce          ###   ########.fr        #
+#    Updated: 2021/10/01 15:24:43 by mabouce          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ def predictor(km: float) -> float:
 
         if theta_0 == 0 and theta_1 == 0:
             print("The model is not trained.")
-            return
+            return 0.0
         # Put km into the normalized scale
         km /= original_data_scale
         predicted_price = theta_0 + theta_1 * km
