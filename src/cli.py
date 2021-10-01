@@ -6,7 +6,7 @@
 #    By: mabouce <ma.sithis@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/01 20:27:45 by mabouce           #+#    #+#              #
-#    Updated: 2021/10/01 14:23:53 by mabouce          ###   ########.fr        #
+#    Updated: 2021/10/01 14:56:44 by mabouce          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,9 @@ from src.deep_learner import DeepLearner
 from src.utils import save_info_to_file, get_info_from_file, read_csv_file
 
 
-@click.command()
-@click.argument(
-    "km",
-    type=float,
-)
-def predict(km: float):
+def predictor(km: float) -> float:
     """
-    Predict price of a car with the input km.
+    This function predict the price of a car using the info saved by the learning method, and return the predicted price.
     """
     try:
         original_data_scale, theta_0, theta_1 = get_info_from_file()
@@ -37,10 +32,26 @@ def predict(km: float):
         km /= original_data_scale
         predicted_price = theta_0 + theta_1 * km
         # Put back the price to normal scale
-        predicted_price *= original_data_scale
+        return predicted_price * original_data_scale
+    except:
+        print("predictor failed.")
+        raise
+
+
+@click.command()
+@click.argument(
+    "km",
+    type=float,
+)
+def predict(km: float):
+    """
+    Command to predict price of a car with the input km.
+    """
+    try:
+        predicted_price = predictor(km=km)
         print("The estimated price of the car is : ", predicted_price)
     except:
-        print("predict failed.")
+        pass
 
 
 @click.command()
@@ -59,7 +70,7 @@ def learn(csv_file_path: Path):
         print("data is empty, nothing to learn.")
         return
     deep_learner = DeepLearner()
-    deep_learner.learn_with_linear_regression(data=data)
+    deep_learner.learn_with_linear_regression(data=data.copy())
     # except:
     # print("learning failed.")
 
