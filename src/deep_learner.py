@@ -94,13 +94,6 @@ class DeepLearner:
         self._data["km"] = self._data["km"] / maximum_absolute
         self._data["price"] = self._data["price"] / maximum_absolute
 
-    def _denormalizing_data(self):
-        """
-        Set back data to it's original scale.
-        """
-        self._data["km"] = self._data["km"] * self._original_data_scale
-        self._data["price"] = self._data["price"] * self._original_data_scale
-
     def _set_theta_to_scale(self):
         """
         Set theta to original data scale.
