@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from pandas.core.frame import DataFrame
 
-from src.utils import write_theta_file, get_theta_values_from_file
+from src.utils import save_info_to_file
 from src.global_var import RESOURCES_DIR_PATH
 
 
@@ -16,11 +16,8 @@ class DeepLearner:
     _learning_rate: float = 0.1
 
     def __init__(self):
-        try:
-            self._theta_0, self._theta_1 = get_theta_values_from_file()
-        except:
-            self._theta_0 = 0.0
-            self._theta_1 = 0.0
+        self._theta_0 = 0.0
+        self._theta_1 = 0.0
 
     def print_linear_regression_model_and_data(
         self,
@@ -91,17 +88,18 @@ class DeepLearner:
         """
         Normalizing data using maximum absolute scaling algorithm.
         """
-        self._original_x_scale = self._data["km"].abs().max()
-        self._data["km"] = self._data["km"] / self._data["km"].abs().max()
-        self._original_y_scale = self._data["price"].abs().max()
-        self._data["price"] = self._data["price"] / self._data["price"].abs().max()
+
+        maximum_absolute = max(self._data["km"].abs().max(), self._data["price"].abs().max())
+        self._original_data_scale = maximum_absolute
+        self._data["km"] = self._data["km"] / maximum_absolute
+        self._data["price"] = self._data["price"] / maximum_absolute
 
     def _denormalizing_data(self):
         """
         Set back data to it's original scale.
         """
-        self._data["km"] = self._data["km"] * self._original_x_scale
-        self._data["price"] = self._data["price"] * self._original_y_scale
+        self._data["km"] = self._data["km"] * self._original_data_scale
+        self._data["price"] = self._data["price"] * self._original_data_scale
 
     def _set_theta_to_scale(self):
         """
@@ -136,7 +134,7 @@ class DeepLearner:
             y=self._normalized_y,
             xlabel="km",
             ylabel="price",
-            title="linear_regression_model_and_data_before_learn",
+            title="linear_regression_model_and_normalized_data_before_learn",
             to_show=False,
         )
 
@@ -147,12 +145,15 @@ class DeepLearner:
             y=self._normalized_y,
             xlabel="km",
             ylabel="price",
-            title="linear_regression_model_and_data_after_learn",
+            title="linear_regression_model_and_normalized_data_after_learn",
             to_show=False,
         )
 
-        print("new theta set to: ", str(self._theta_0) + " " + str(self._theta_1))
-        write_theta_file(theta_0=self._theta_0, theta_1=self._theta_1)
+        save_info_to_file(
+            original_data_scale=self._original_data_scale,
+            theta_0=self._theta_0,
+            theta_1=self._theta_1,
+        )
         # except Exception as e:
         #     print("DeepLearner learn failed: ", e)
         #     raise

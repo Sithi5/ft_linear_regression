@@ -6,17 +6,16 @@
 #    By: mabouce <ma.sithis@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/01 20:27:45 by mabouce           #+#    #+#              #
-#    Updated: 2021/09/29 16:50:56 by mabouce          ###   ########.fr        #
+#    Updated: 2021/10/01 14:23:53 by mabouce          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import click
 from pathlib import Path
 
-from src.global_var import DEFAULT_CSV_FILE_PATH, THETA_VALUE_FILE_PATH
-from src.print import print_data
+from src.global_var import DEFAULT_CSV_FILE_PATH
 from src.deep_learner import DeepLearner
-from src.utils import write_theta_file, get_theta_values_from_file, read_csv_file
+from src.utils import save_info_to_file, get_info_from_file, read_csv_file
 
 
 @click.command()
@@ -29,11 +28,16 @@ def predict(km: float):
     Predict price of a car with the input km.
     """
     try:
-        theta_0, theta_1 = get_theta_values_from_file()
+        original_data_scale, theta_0, theta_1 = get_info_from_file()
+
         if theta_0 == 0 and theta_1 == 0:
             print("The model is not trained.")
             return
+        # Put km into the normalized scale
+        km /= original_data_scale
         predicted_price = theta_0 + theta_1 * km
+        # Put back the price to normal scale
+        predicted_price *= original_data_scale
         print("The estimated price of the car is : ", predicted_price)
     except:
         print("predict failed.")
@@ -74,7 +78,7 @@ def set_theta(theta_0: float, theta_1: float):
     Set manually the thetas.
     """
     try:
-        write_theta_file(theta_0=theta_0, theta_1=theta_1)
+        save_info_to_file(original_data_scale=1.0, theta_0=theta_0, theta_1=theta_1)
         print("new theta set to: ", str(theta_0) + " " + str(theta_1))
     except:
         print("set theta failed.")

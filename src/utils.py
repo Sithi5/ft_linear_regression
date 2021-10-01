@@ -2,7 +2,7 @@ import io
 import pandas as pd
 from numpy.typing import ArrayLike
 
-from src.global_var import THETA_VALUE_FILE_PATH
+from src.global_var import SAVE_FILE_NAME
 from pandas.core.frame import DataFrame
 
 
@@ -18,24 +18,31 @@ def read_csv_file(csv_file_path) -> DataFrame:
     return data
 
 
-def get_theta_values_from_file() -> tuple():
+def get_info_from_file() -> tuple():
     """
-    This function read the theta values contained in the file and return it.
-    If the file doesn't exist, it will return 0.0 0.0 as default value.
+    This function read the originial_data_scale and the theta values contained in the file and return it as a tuple.
+    If the file doesn't exist, it will return (1.0, 0.0, 0.0) as default value.
     """
     try:
-        with open(THETA_VALUE_FILE_PATH) as file:
-            theta = file.read()
-            theta = theta.split()
-        return (float(theta[0]), float(theta[1]))
+        with open(SAVE_FILE_NAME) as file:
+            infos = file.read()
+            infos = infos.split()
+        return (float(infos[0]), float(infos[1]), float(infos[2]))
     except:
-        return (0.0, 0.0)
+        return (1.0, 0.0, 0.0)
 
 
-def write_theta_file(theta_0: float, theta_1: float):
+def save_info_to_file(original_data_scale: float, theta_0: float, theta_1: float):
+    """
+    Save originial_data_scale, the two theta value into a file save_info.
+    """
     try:
-        with open(THETA_VALUE_FILE_PATH, "w") as file:
-            file.write(str(theta_0) + " " + str(theta_1))
+        with open(SAVE_FILE_NAME, "w") as file:
+            file.write(str(original_data_scale) + " " + str(theta_0) + " " + str(theta_1))
+        print("Saved into file following datas : ")
+        print("\toriginal_data_scale : \t", original_data_scale)
+        print("\ttheta_0 : \t\t", theta_0)
+        print("\ttheta_1 : \t\t", theta_1)
     except Exception as e:
         print("Write theta file fail: ", e)
         raise
