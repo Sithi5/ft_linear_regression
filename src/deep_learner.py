@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from numpy.typing import ArrayLike
 from pandas.core.frame import DataFrame
+from progress.bar import ChargingBar
 
 from src.utils import save_info_to_file
 from src.global_var import RESOURCES_DIR_PATH
@@ -16,6 +17,7 @@ class DeepLearner:
     _learning_rate: float = 0.1
 
     def __init__(self):
+        self._learning_range = 1000
         self._theta_0 = 0.0
         self._theta_1 = 0.0
 
@@ -78,11 +80,40 @@ class DeepLearner:
         return [derivated_theta0, derivated_theta1]
 
     def _gradient_descent(self):
-        iteration_number = 1000
-        for i in range(iteration_number):
+        bar = ChargingBar("Training", max=self._learning_range, suffix="%(percent)d%%")
+        for i in range(self._learning_range):
             [derivated_theta0, derivated_theta1] = self._partial_derivative_calcul()
             self._theta_0 = self._theta_0 - derivated_theta0
             self._theta_1 = self._theta_1 - derivated_theta1
+            if i == self._learning_range / 10:
+                self.print_linear_regression_model_and_data(
+                    x=self._normalized_x,
+                    y=self._normalized_y,
+                    xlabel="km",
+                    ylabel="price",
+                    title="t1_linear_regression_model",
+                    to_show=False,
+                )
+            if i == self._learning_range / 5:
+                self.print_linear_regression_model_and_data(
+                    x=self._normalized_x,
+                    y=self._normalized_y,
+                    xlabel="km",
+                    ylabel="price",
+                    title="t2_linear_regression_model",
+                    to_show=False,
+                )
+            if i == self._learning_range / 2:
+                self.print_linear_regression_model_and_data(
+                    x=self._normalized_x,
+                    y=self._normalized_y,
+                    xlabel="km",
+                    ylabel="price",
+                    title="t3_linear_regression_model",
+                    to_show=False,
+                )
+            bar.next()
+        bar.finish()
 
     def _normalizing_data(self):
         """
@@ -127,7 +158,7 @@ class DeepLearner:
             y=self._normalized_y,
             xlabel="km",
             ylabel="price",
-            title="linear_regression_model_and_normalized_data_before_learn",
+            title="t0_linear_regression_model",
             to_show=False,
         )
 
@@ -138,7 +169,7 @@ class DeepLearner:
             y=self._normalized_y,
             xlabel="km",
             ylabel="price",
-            title="linear_regression_model_and_normalized_data_after_learn",
+            title="t4_linear_regression_model",
             to_show=False,
         )
 
