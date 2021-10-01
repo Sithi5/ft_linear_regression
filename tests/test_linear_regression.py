@@ -2,8 +2,30 @@ import pytest
 
 from src.global_var import DEFAULT_CSV_FILE_PATH
 from src.deep_learner import DeepLearner
-from src.utils import save_info_to_file, get_info_from_file, read_csv_file
+from src.utils import (
+    delete_info_file,
+    save_info_to_file,
+    get_info_from_file,
+    read_csv_file,
+    delete_info_file,
+)
 from src.cli import predictor
+
+
+def test_predict():
+    try:
+        delete_info_file()
+    except:
+        pass
+    km = 15000
+    predicted_price = predictor(km=km)
+    # No learning yet, should predict price 0.0
+    assert predicted_price == 0.0
+    data = read_csv_file(csv_file_path=DEFAULT_CSV_FILE_PATH)
+    deep_learner = DeepLearner()
+    deep_learner.learn_with_linear_regression(data=data.copy())
+    predicted_price = predictor(km=km)
+    assert predicted_price != 0.0
 
 
 def test_subject():
