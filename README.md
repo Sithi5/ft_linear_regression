@@ -32,7 +32,7 @@ Execute `setup.py`:
 ```
 * For user:
 ```bash
-(venv) > pip install .
+(venv) > pip install --editable .
 ```
 
 ## How to run
