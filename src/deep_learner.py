@@ -5,7 +5,7 @@ from numpy.typing import ArrayLike
 from pandas.core.frame import DataFrame
 from progress.bar import ChargingBar
 
-from src.utils import save_info_to_file
+from src.utils import save_info_to_file, Colors
 from src.global_var import RESOURCES_DIR_PATH
 
 
@@ -14,11 +14,12 @@ class DeepLearner:
     This class use input data to learn with linear regression.
     """
 
-    _learning_rate: float = 0.1
-    _eps = 0.001  # Stop condition
-
-    def __init__(self):
-        self._learning_range = 1000
+    def __init__(
+        self, learning_range: float = 1000, learning_rate: float = 0.1, eps: float = 0.001
+    ):
+        self._learning_range = learning_range
+        self._learning_rate = learning_rate
+        self._eps = eps  # Stop condition
         self._theta_0 = 0.0
         self._theta_1 = 0.0
 
@@ -121,7 +122,11 @@ class DeepLearner:
         previous_cost = current_cost
         condition = self._eps + 10.0  # Start with condition greater than eps (assumption)
 
-        bar = ChargingBar("Training", max=self._learning_range, suffix="%(percent)d%%")
+        bar = ChargingBar(
+            "Training",
+            max=self._learning_range,
+            suffix=Colors.OKCYAN + "%(percent)d%%" + Colors.ENDC,
+        )
 
         i = 0
         while i < self._learning_range and condition > self._eps:
@@ -160,45 +165,44 @@ class DeepLearner:
         Use a pandas module DataFrame object to learn with a linear regression algorithm.
         """
 
-        # try:
+        try:
+            self._theta_0 = 0.0
+            self._theta_1 = 0.0
 
-        self._theta_0 = 0.0
-        self._theta_1 = 0.0
+            self._data = data
 
-        self._data = data
+            self._m = len(data)
+            self._x = data.iloc[0 : self._m, 0]
+            self._y = data.iloc[0 : self._m, 1]
+            self._normalizing_data()
+            self._normalized_x = data.iloc[0 : self._m, 0]
+            self._normalized_y = data.iloc[0 : self._m, 1]
 
-        self._m = len(data)
-        self._x = data.iloc[0 : self._m, 0]
-        self._y = data.iloc[0 : self._m, 1]
-        self._normalizing_data()
-        self._normalized_x = data.iloc[0 : self._m, 0]
-        self._normalized_y = data.iloc[0 : self._m, 1]
+            self.output_linear_regression_model_and_data(
+                x=self._normalized_x,
+                y=self._normalized_y,
+                xlabel="km",
+                ylabel="price",
+                title="t0_linear_regression_model",
+                to_show=False,
+            )
 
-        self.output_linear_regression_model_and_data(
-            x=self._normalized_x,
-            y=self._normalized_y,
-            xlabel="km",
-            ylabel="price",
-            title="t0_linear_regression_model",
-            to_show=False,
-        )
+            self._gradient_descent()
 
-        self._gradient_descent()
+            self.output_linear_regression_model_and_data(
+                x=self._normalized_x,
+                y=self._normalized_y,
+                xlabel="km",
+                ylabel="price",
+                title="t4_linear_regression_model",
+                to_show=False,
+            )
 
-        self.output_linear_regression_model_and_data(
-            x=self._normalized_x,
-            y=self._normalized_y,
-            xlabel="km",
-            ylabel="price",
-            title="t4_linear_regression_model",
-            to_show=False,
-        )
-
-        save_info_to_file(
-            original_data_scale=self._original_data_scale,
-            theta_0=self._theta_0,
-            theta_1=self._theta_1,
-        )
-        # except Exception as e:
-        #     output("DeepLearner learn failed: ", e)
-        #     raise
+            save_info_to_file(
+                original_data_scale=self._original_data_scale,
+                theta_0=self._theta_0,
+                theta_1=self._theta_1,
+            )
+        except Exception as e:
+            print("DeepLearner learn_with_linear_regression failed: ", e)
+            raise

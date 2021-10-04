@@ -1,11 +1,7 @@
-import pytest
-
 from src.global_var import DEFAULT_CSV_FILE_PATH
 from src.deep_learner import DeepLearner
 from src.utils import (
     delete_info_file,
-    save_info_to_file,
-    get_info_from_file,
     read_csv_file,
     delete_info_file,
 )

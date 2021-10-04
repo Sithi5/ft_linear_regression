@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 
+
 from src.global_var import SAVE_FILE_PATH
 from pandas.core.frame import DataFrame
 
@@ -58,12 +59,13 @@ def delete_info_file():
         raise
 
 
-def maximum_absolute_scaling(data_frame: DataFrame):
-    # Copy the dataframe
-    data_frame_scaled = data_frame.copy()
-    # Apply maximum absolute scaling
-    for column in data_frame_scaled.columns:
-        data_frame_scaled[column] = (
-            data_frame_scaled[column] / data_frame_scaled[column].abs().max()
-        )
-    return data_frame_scaled
+class Colors():
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"

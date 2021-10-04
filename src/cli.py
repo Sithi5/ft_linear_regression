@@ -6,7 +6,7 @@
 #    By: mabouce <ma.sithis@gmail.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/01 20:27:45 by mabouce           #+#    #+#              #
-#    Updated: 2021/10/01 15:24:43 by mabouce          ###   ########.fr        #
+#    Updated: 2021/10/04 12:46:01 by mabouce          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,15 +64,15 @@ def learn(csv_file_path: Path):
     """
     This function will train the model and set theta_0 and theta_1.
     """
-    # try:
-    data = read_csv_file(csv_file_path=csv_file_path)
-    if data.empty:
-        print("data is empty, nothing to learn.")
-        return
-    deep_learner = DeepLearner()
-    deep_learner.learn_with_linear_regression(data=data.copy())
-    # except:
-    # print("learning failed.")
+    try:
+        data = read_csv_file(csv_file_path=csv_file_path)
+        if data.empty:
+            print("data is empty, nothing to learn.")
+            return
+        deep_learner = DeepLearner()
+        deep_learner.learn_with_linear_regression(data=data.copy())
+    except:
+        print("learning failed.")
 
 
 @click.argument(
