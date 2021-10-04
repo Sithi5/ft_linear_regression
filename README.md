@@ -15,8 +15,8 @@ The aim of this project is to introduce you to the basic concept behind machine 
 
 Create a virtual environment and activate it
 ```bash
-> python -m venv venv
-> .\venv\Scripts\activate.bat # on Windows
+python -m venv venv
+.\venv\Scripts\activate.bat # on Windows
 ```
 
 Install the pre-requirement:
@@ -28,11 +28,11 @@ Execute `setup.py`:
 
 * for dev:
 ```bash
-(venv) > pip install --editable .[dev]
+pip install --editable .[dev]
 ```
 * For user:
 ```bash
-(venv) > pip install .
+pip install .
 ```
 
 ## How to run
@@ -40,7 +40,7 @@ Execute `setup.py`:
 Launch `linear_regression`:
 
 ```bash
-(venv) λ linear_regression --help
+linear_regression --help
 Usage: linear_regression [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -55,7 +55,7 @@ Commands:
 ## How to test
 
 ```bash
-(venv) λ pytest .\tests
+pytest .\tests
 ```
 
 
