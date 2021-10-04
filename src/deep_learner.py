@@ -15,11 +15,15 @@ class DeepLearner:
     """
 
     _learning_rate: float = 0.1
+    _eps = 0.001  # Stop condition
 
     def __init__(self):
         self._learning_range = 1000
         self._theta_0 = 0.0
         self._theta_1 = 0.0
+
+    def _model_function(self, km: float) -> float:
+        return self._theta_0 + self._theta_1 * km
 
     def output_linear_regression_model_and_data(
         self,
@@ -41,7 +45,7 @@ class DeepLearner:
         plt.xlabel(xlabel=xlabel)
         plt.ylabel(ylabel=ylabel)
         plt.plot(x, y, "r.", label="Data")
-        plt.plot(x, self._theta_0 + self._theta_1 * x, "-r", label="regression")
+        plt.plot(x, self._model_function(km=x), "-r", label="regression")
         # f(x) = a + bx
         if to_show is True:
             plt.show()
@@ -49,6 +53,9 @@ class DeepLearner:
             plt.savefig(os.path.join(RESOURCES_DIR_PATH, title + ".png"))
 
     def _output_learning_process_graph(self, range_index: int):
+        """
+        Output graph at different learning time.
+        """
         if range_index == self._learning_range / 10:
             self.output_linear_regression_model_and_data(
                 x=self._normalized_x,
@@ -86,8 +93,7 @@ class DeepLearner:
             * (1 / self._m)
             * sum(
                 [
-                    (self._theta_0 + (self._theta_1 * self._normalized_x[i]))
-                    - float(self._normalized_y[i])
+                    self._model_function(km=self._normalized_x[i]) - float(self._normalized_y[i])
                     for i in range(self._m)
                 ]
             )
@@ -97,10 +103,7 @@ class DeepLearner:
             * (1 / self._m)
             * sum(
                 [
-                    (
-                        (self._theta_0 + (self._theta_1 * self._normalized_x[i]))
-                        - float(self._normalized_y[i])
-                    )
+                    (self._model_function(km=self._normalized_x[i]) - float(self._normalized_y[i]))
                     * float(self._normalized_x[i])
                     for i in range(self._m)
                 ]
@@ -109,30 +112,45 @@ class DeepLearner:
         return (derivated_theta0, derivated_theta1)
 
     def _gradient_descent(self):
+        current_cost = sum(
+            [
+                (self._model_function(km=self._normalized_x[i]) * self._maximum_absolute)
+                for i in range(self._m)
+            ]
+        )
+        previous_cost = current_cost
+        condition = self._eps + 10.0  # Start with condition greater than eps (assumption)
+
         bar = ChargingBar("Training", max=self._learning_range, suffix="%(percent)d%%")
-        for i in range(self._learning_range):
+
+        i = 0
+        while i < self._learning_range and condition > self._eps:
             derivated_theta0, derivated_theta1 = self._partial_derivative_calcul()
             self._theta_0 = self._theta_0 - derivated_theta0
             self._theta_1 = self._theta_1 - derivated_theta1
-            self._output_learning_process_graph(range_index=i)
             bar.next()
+            self._output_learning_process_graph(range_index=i)
+
+            current_cost = sum(
+                [
+                    (self._model_function(km=self._normalized_x[i]) * self._maximum_absolute)
+                    for i in range(self._m)
+                ]
+            )
+            condition = abs(previous_cost - current_cost)
+            previous_cost = current_cost
+            i += 1
+
         bar.finish()
 
     def _normalizing_data(self):
         """
         Normalizing data using maximum absolute scaling algorithm.
         """
-
-        maximum_absolute = max(self._data["km"].abs().max(), self._data["price"].abs().max())
-        self._original_data_scale = maximum_absolute
-        self._data["km"] = self._data["km"] / maximum_absolute
-        self._data["price"] = self._data["price"] / maximum_absolute
-
-    def _set_theta_to_scale(self):
-        """
-        Set theta to original data scale.
-        """
-        pass
+        self._maximum_absolute = max(self._data["km"].abs().max(), self._data["price"].abs().max())
+        self._original_data_scale = self._maximum_absolute
+        self._data["km"] = self._data["km"] / self._maximum_absolute
+        self._data["price"] = self._data["price"] / self._maximum_absolute
 
     def learn_with_linear_regression(
         self,
