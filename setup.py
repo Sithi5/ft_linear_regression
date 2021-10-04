@@ -3,7 +3,7 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
-requirements = ["pandas==1.3.3", "matplotlib==3.4.3", "progress==1.6"]
+requirements = ["pandas==1.3.3", "matplotlib==3.4.3", "progress==1.6", "click==8.0.1"]
 
 test_requirements = ["pytest==5.4.3"]
 
