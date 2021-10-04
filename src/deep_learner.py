@@ -11,7 +11,7 @@ from src.global_var import RESOURCES_DIR_PATH
 
 class DeepLearner:
     """
-    This class use input data to learn with different methods.
+    This class use input data to learn with linear regression.
     """
 
     _learning_rate: float = 0.1
