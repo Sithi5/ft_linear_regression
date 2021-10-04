@@ -32,7 +32,7 @@ pip install --editable .[dev]
 ```
 * For user:
 ```bash
-(venv) > pip install --editable .
+pip install --editable .
 ```
 
 ## How to run
