@@ -125,7 +125,7 @@ class DeepLearner:
         bar = ChargingBar(
             "Training",
             max=self._learning_range,
-            suffix=Colors.OKCYAN + "%(percent)d%%" + Colors.ENDC,
+            suffix= "%(percent)d%%",
         )
 
         i = 0
