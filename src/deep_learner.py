@@ -21,7 +21,7 @@ class DeepLearner:
         self._theta_0 = 0.0
         self._theta_1 = 0.0
 
-    def print_linear_regression_model_and_data(
+    def output_linear_regression_model_and_data(
         self,
         x: ArrayLike,
         y: ArrayLike,
@@ -48,7 +48,36 @@ class DeepLearner:
         if to_save is True:
             plt.savefig(os.path.join(RESOURCES_DIR_PATH, title + ".png"))
 
-    def _partial_derivative_calcul(self):
+    def _output_learning_process_graph(self, range_index: int):
+        if range_index == self._learning_range / 10:
+            self.output_linear_regression_model_and_data(
+                x=self._normalized_x,
+                y=self._normalized_y,
+                xlabel="km",
+                ylabel="price",
+                title="t1_linear_regression_model",
+                to_show=False,
+            )
+        if range_index == self._learning_range / 5:
+            self.output_linear_regression_model_and_data(
+                x=self._normalized_x,
+                y=self._normalized_y,
+                xlabel="km",
+                ylabel="price",
+                title="t2_linear_regression_model",
+                to_show=False,
+            )
+        if range_index == self._learning_range / 2:
+            self.output_linear_regression_model_and_data(
+                x=self._normalized_x,
+                y=self._normalized_y,
+                xlabel="km",
+                ylabel="price",
+                title="t3_linear_regression_model",
+                to_show=False,
+            )
+
+    def _partial_derivative_calcul(self) -> tuple():
         derivated_theta0 = float(0)
         derivated_theta1 = float(0)
 
@@ -77,41 +106,15 @@ class DeepLearner:
                 ]
             )
         )
-        return [derivated_theta0, derivated_theta1]
+        return (derivated_theta0, derivated_theta1)
 
     def _gradient_descent(self):
         bar = ChargingBar("Training", max=self._learning_range, suffix="%(percent)d%%")
         for i in range(self._learning_range):
-            [derivated_theta0, derivated_theta1] = self._partial_derivative_calcul()
+            derivated_theta0, derivated_theta1 = self._partial_derivative_calcul()
             self._theta_0 = self._theta_0 - derivated_theta0
             self._theta_1 = self._theta_1 - derivated_theta1
-            if i == self._learning_range / 10:
-                self.print_linear_regression_model_and_data(
-                    x=self._normalized_x,
-                    y=self._normalized_y,
-                    xlabel="km",
-                    ylabel="price",
-                    title="t1_linear_regression_model",
-                    to_show=False,
-                )
-            if i == self._learning_range / 5:
-                self.print_linear_regression_model_and_data(
-                    x=self._normalized_x,
-                    y=self._normalized_y,
-                    xlabel="km",
-                    ylabel="price",
-                    title="t2_linear_regression_model",
-                    to_show=False,
-                )
-            if i == self._learning_range / 2:
-                self.print_linear_regression_model_and_data(
-                    x=self._normalized_x,
-                    y=self._normalized_y,
-                    xlabel="km",
-                    ylabel="price",
-                    title="t3_linear_regression_model",
-                    to_show=False,
-                )
+            self._output_learning_process_graph(range_index=i)
             bar.next()
         bar.finish()
 
@@ -153,7 +156,7 @@ class DeepLearner:
         self._normalized_x = data.iloc[0 : self._m, 0]
         self._normalized_y = data.iloc[0 : self._m, 1]
 
-        self.print_linear_regression_model_and_data(
+        self.output_linear_regression_model_and_data(
             x=self._normalized_x,
             y=self._normalized_y,
             xlabel="km",
@@ -164,7 +167,7 @@ class DeepLearner:
 
         self._gradient_descent()
 
-        self.print_linear_regression_model_and_data(
+        self.output_linear_regression_model_and_data(
             x=self._normalized_x,
             y=self._normalized_y,
             xlabel="km",
@@ -179,5 +182,5 @@ class DeepLearner:
             theta_1=self._theta_1,
         )
         # except Exception as e:
-        #     print("DeepLearner learn failed: ", e)
+        #     output("DeepLearner learn failed: ", e)
         #     raise
