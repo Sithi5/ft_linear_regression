@@ -11,7 +11,7 @@ Machine learning is a growing field of computer science that may seem a bit comp
 
 The aim of this project is to introduce you to the basic concept behind machine learning. For this project, you will have to create a program that predicts the price of a car by using a [linear function](https://en.wikipedia.org/wiki/Linear_function) train with a [gradient descent algorithm](https://en.wikipedia.org/wiki/Gradient_descent). We will work on a precise example for the project, but once you’re done you will be able to use the algorithm with any other dataset.
 
-## How to run
+## How to install
 
 Create a virtual environment and activate it
 ```bash
@@ -25,9 +25,17 @@ Install the pre-requirement:
 ```
 
 Execute `setup.py`:
+
+* for dev:
 ```bash
-(venv) > pip install --editable .[dev] #[dev] to build in dev mode.
+(venv) > pip install --editable .[dev]
 ```
+* For user:
+```bash
+(venv) > pip install .
+```
+
+## How to run
 
 Launch `linear_regression`:
 
@@ -43,6 +51,13 @@ Commands:
   predict
   set-theta
 ```
+
+## How to test
+
+```bash
+(venv) λ pytest .\tests
+```
+
 
 ## Resources
 
