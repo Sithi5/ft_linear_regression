@@ -2,7 +2,7 @@
 
 ![png](linear_regression.jpg)
 
-  
+
 ## Introduction
 
 Machine learning is a growing field of computer science that may seem a bit complicated and reserved only to mathematicians. You may have heard of neural networks or k-means clustering and don’t undersdand how they work or how to code these kinds of algorithms... But don’t worry, we are actually going to start with a simple, basic machine learning algorithm.
@@ -19,7 +19,7 @@ Create a virtual environment and activate it
 > .\venv\Scripts\activate.bat # on Windows
 ```
 
-Install the pre-requirement: 
+Install the pre-requirement:
 ```bash
 (venv) > pip install -U -r pre-requirements.txt
 ```
@@ -48,9 +48,10 @@ Commands:
 
 * [https://www.stat4decision.com/fr/faire-regression-lineaire-r-python/](https://www.stat4decision.com/fr/faire-regression-lineaire-r-python/)
 * [https://www.datacorner.fr/gradient-descent/](https://www.datacorner.fr/gradient-descent/)
-* [https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html](https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html) 
-* [https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling](https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling) 
-* [https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf) 
+* [https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html](https://www.netlib.org/utk/lsi/pcwLSI/text/node226.html)
+* [https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling](https://developers.google.com/machine-learning/crash-course/glossary?hl=fr#scaling)
+* [https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-regsim.pdf)
 * [https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf](https://www.colorado.edu/amath/sites/default/files/attached-files/ch12_0.pdf)
 * [https://mrmint.fr/regression-lineaire-python-pratique](https://mrmint.fr/regression-lineaire-python-pratique)
 * [https://machinelearnia.com/regression-lineaire-simple/](https://machinelearnia.com/regression-lineaire-simple/)
+* [https://moonbooks.org/Articles/Algorithme-du-gradient-gradient-descent-avec-python/](https://moonbooks.org/Articles/Algorithme-du-gradient-gradient-descent-avec-python/)
