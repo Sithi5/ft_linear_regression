@@ -5,7 +5,7 @@ from numpy.typing import ArrayLike
 from pandas.core.frame import DataFrame
 from progress.bar import ChargingBar
 
-from src.utils import save_info_to_file, Colors
+from src.utils import save_info_to_file
 from src.global_var import RESOURCES_DIR_PATH
 
 
@@ -125,7 +125,7 @@ class DeepLearner:
         bar = ChargingBar(
             "Training",
             max=self._learning_range,
-            suffix= "%(percent)d%%",
+            suffix="%(percent)d%%",
         )
 
         i = 0
