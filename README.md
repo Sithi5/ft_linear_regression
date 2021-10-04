@@ -21,7 +21,7 @@ python -m venv venv
 
 Install the pre-requirement:
 ```bash
-(venv) > pip install -U -r pre-requirements.txt
+pip install -U -r pre-requirements.txt
 ```
 
 Execute `setup.py`:
